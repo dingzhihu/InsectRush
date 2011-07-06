@@ -1,0 +1,9 @@
+
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+	android:oneshot="false">
+	<item android:drawable="@drawable/bug_south0" android:duration="100" />
+	<item android:drawable="@drawable/bug_south1" android:duration="100" />
+	<item android:drawable="@drawable/bug_south2" android:duration="100" />
+	<item android:drawable="@drawable/bug_south3" android:duration="100" />
+</animation-list>
+
