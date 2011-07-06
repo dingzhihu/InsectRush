@@ -30,7 +30,12 @@ public class InsectManager {
          case MSG_UPDATE_SCREEN:
             update();
             break;
-
+         case MSG_KILL_INSECT:
+            Insect insect = (Insect) msg.obj;
+            if (mInsectQueue.contains(insect)) {
+               mInsectQueue.remove(insect);
+            }
+            break;
          default:
             break;
          }
