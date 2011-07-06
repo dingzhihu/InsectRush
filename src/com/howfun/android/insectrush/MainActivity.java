@@ -37,7 +37,7 @@ public class MainActivity extends Activity {
 
    public void init() {
       mContext = this;
-      mInspectManager = new InsectManager();
+      mInspectManager = new InsectManager(mContext);
 
    }
 
@@ -63,7 +63,7 @@ public class MainActivity extends Activity {
 
    private void addInsect(int x, int y) {
       Insect insect = new Bug(mContext, x, y);
-      mInspectManager.addInsect(insect);
+      mInspectManager.addInsect2(insect);
    }
 
    private void showWelcomeMessage(Context context, int stringId) {

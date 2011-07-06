@@ -1,6 +1,8 @@
 package com.howfun.android.insect;
 
+import java.util.LinkedList;
 import java.util.Random;
+import java.util.Stack;
 
 import com.howfun.android.insectrush.R;
 
@@ -12,6 +14,9 @@ public class Bug extends Insect {
 
    private final int RECT_WIDTH = 70;
    private final int RECT_HEIGHT = 70;
+
+   public static final int[] FOOTPRINTS = { R.drawable.bug_footprint0,
+         R.drawable.bug_footprint1 };
 
    private static final Random RNG = new Random();
 
@@ -37,6 +42,8 @@ public class Bug extends Insect {
 
       long life = LIFES[RNG.nextInt(LIFES.length)];
       setLife(life);
+
+      mFootprintStack= new Stack<Footprint>();
 
       setClickable(false);
 

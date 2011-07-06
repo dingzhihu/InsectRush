@@ -1,6 +1,10 @@
 package com.howfun.android.insect;
 
+import java.util.Queue;
+import java.util.Stack;
+
 import android.content.Context;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.widget.ImageView;
 
@@ -12,7 +16,7 @@ public class Insect extends ImageView {
 
    protected static final int[] DIRECTIONS = { NORTH, SOUTH, WEST, EAST };
    protected static final int[] MOVE_STEPS = { 5, 10, 15 };
-   protected static final long[] LIFES = {10000L};
+   protected static final long[] LIFES = { 10000L };
 
    protected int mBirthX;
    protected int mBirthY;
@@ -25,6 +29,8 @@ public class Insect extends ImageView {
    private int mStep;
    protected int mDirection;
    private long mLife;
+
+   protected Stack<Footprint> mFootprintStack = null;
 
    public Insect(Context context) {
       super(context);
@@ -88,6 +94,36 @@ public class Insect extends ImageView {
 
    public long getLife() {
       return this.mLife;
+   }
+
+   public Point getFootprintPos() {
+      int x = 0;
+      int y = 0;
+      switch (mDirection) {
+      case NORTH:
+         x = mCenterX;
+         y = mCenterY + mRectHeight / 2;
+         break;
+      case SOUTH:
+         x = mCenterX;
+         y = mCenterY - mRectHeight / 2;
+         break;
+      case WEST:
+         x = mCenterX + mRectWidth / 2;
+         y = mCenterY;
+         break;
+      case EAST:
+         x = mCenterX - mRectWidth / 2;
+         y = mCenterY;
+         break;
+      default:
+         break;
+      }
+      return new Point(x, y);
+   }
+
+   public Stack<Footprint> getFootprintStack() {
+      return mFootprintStack;
    }
 
 }
