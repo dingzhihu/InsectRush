@@ -10,8 +10,8 @@ import android.graphics.drawable.AnimationDrawable;
 
 public class Bug extends Insect {
 
-   private final int RECT_WIDTH = 100;
-   private final int RECT_HEIGHT = 100;
+   private final int RECT_WIDTH = 70;
+   private final int RECT_HEIGHT = 70;
 
    private static final Random RNG = new Random();
 

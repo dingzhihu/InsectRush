@@ -4,14 +4,17 @@ import com.howfun.android.insect.Bug;
 import com.howfun.android.insect.Insect;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnTouchListener;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
+   private static final String TAG = "MainActivity";
 
    private ScreenView mScreenView = null;
 
@@ -23,10 +26,13 @@ public class MainActivity extends Activity {
       requestWindowFeature(Window.FEATURE_NO_TITLE);
       super.onCreate(savedInstanceState);
       setContentView(R.layout.main);
+      Utils.log(TAG, "before init");
       init();
       findViews();
       setupListeners();
       mInspectManager.setScreenView(mScreenView);
+      showWelcomeMessage(mContext, R.string.msg_welcome);
+      Utils.log(TAG, "after show message");
    }
 
    public void init() {
@@ -59,4 +65,21 @@ public class MainActivity extends Activity {
       Insect insect = new Bug(mContext, x, y);
       mInspectManager.addInsect(insect);
    }
+
+   private void showWelcomeMessage(Context context, int stringId) {
+      new AlertDialog.Builder(context).setIcon(R.drawable.icon).setTitle(
+            R.string.app_name).setMessage(stringId).setPositiveButton(
+            android.R.string.ok, null).show();
+   }
+
+   public void onResume() {
+      super.onResume();
+      Toast.makeText(this, R.string.msg_start, Toast.LENGTH_LONG).show();
+   }
+
+   public void onPause() {
+      super.onPause();
+      Toast.makeText(this, R.string.msg_stop, Toast.LENGTH_LONG).show();
+   }
+
 }
