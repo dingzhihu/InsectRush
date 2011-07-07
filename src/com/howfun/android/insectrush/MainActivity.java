@@ -26,13 +26,11 @@ public class MainActivity extends Activity {
       requestWindowFeature(Window.FEATURE_NO_TITLE);
       super.onCreate(savedInstanceState);
       setContentView(R.layout.main);
-      Utils.log(TAG, "before init");
       init();
       findViews();
       setupListeners();
       mInspectManager.setScreenView(mScreenView);
       showWelcomeMessage(mContext, R.string.msg_welcome);
-      Utils.log(TAG, "after show message");
    }
 
    public void init() {
@@ -79,6 +77,7 @@ public class MainActivity extends Activity {
 
    public void onPause() {
       super.onPause();
+      mInspectManager.clear();
       Toast.makeText(this, R.string.msg_stop, Toast.LENGTH_LONG).show();
    }
 

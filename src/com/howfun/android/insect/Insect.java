@@ -1,6 +1,5 @@
 package com.howfun.android.insect;
 
-import java.util.Queue;
 import java.util.Stack;
 
 import android.content.Context;
@@ -15,17 +14,17 @@ public class Insect extends ImageView {
    public static final int EAST = 4;
 
    protected static final int[] DIRECTIONS = { NORTH, SOUTH, WEST, EAST };
-   protected static final int[] MOVE_STEPS = { 5, 10, 15 };
+   protected static final int[] MOVE_STEPS = { 32, 64 };
    protected static final long[] LIFES = { 10000L };
+   
+   protected static long count = 0;
 
-   protected int mBirthX;
-   protected int mBirthY;
-   protected int mCenterX;
-   protected int mCenterY;
+   protected Point mCenter;
    protected int mRectWidth;
    protected int mRectHeight;
    protected Rect mRect;
 
+   protected long mId;
    private int mStep;
    protected int mDirection;
    private long mLife;
@@ -34,44 +33,37 @@ public class Insect extends ImageView {
 
    public Insect(Context context) {
       super(context);
+      mId = count ++;
    }
 
-   public void setBirth(int x, int y) {
-      this.mBirthX = x;
-      this.mBirthY = y;
-   }
+   public void setCenter(Point p) {
+      int x = p.x;
+      int y = p.y;
+      mCenter = new Point(x, y);
 
-   public int getBirthX() {
-      return mBirthX;
-   }
-
-   public int getBirthY() {
-      return mBirthY;
-   }
-
-   public void setCenter(int x, int y) {
-      this.mCenterX = x;
-      this.mCenterY = y;
-
-      int left = mCenterX - mRectWidth / 2;
-      int top = mCenterY - mRectHeight / 2;
-      int right = mCenterX + mRectWidth / 2;
-      int bottom = mCenterY + mRectHeight / 2;
+      int left = x - mRectWidth / 2;
+      int top = y - mRectHeight / 2;
+      int right = x + mRectWidth / 2;
+      int bottom = y + mRectHeight / 2;
       mRect = new Rect(left, top, right, bottom);
    }
 
-   public int getCenterX() {
-      return mCenterX;
+   public int getX() {
+      return mCenter.x;
    }
 
-   public int getCenterY() {
-      return mCenterY;
+   public int getY() {
+      return mCenter.y;
    }
 
    public Rect getRect() {
       return mRect;
    }
 
+   public long getInsectId(){
+      return mId;
+   }
+   
    public void setStep(int step) {
       mStep = step;
    }
@@ -101,20 +93,20 @@ public class Insect extends ImageView {
       int y = 0;
       switch (mDirection) {
       case NORTH:
-         x = mCenterX;
-         y = mCenterY + mRectHeight / 2;
+         x = mCenter.x;
+         y = mCenter.y + mRectHeight / 2;
          break;
       case SOUTH:
-         x = mCenterX;
-         y = mCenterY - mRectHeight / 2;
+         x = mCenter.x;
+         y = mCenter.y - mRectHeight / 2;
          break;
       case WEST:
-         x = mCenterX + mRectWidth / 2;
-         y = mCenterY;
+         x = mCenter.x + mRectWidth / 2;
+         y = mCenter.y;
          break;
       case EAST:
-         x = mCenterX - mRectWidth / 2;
-         y = mCenterY;
+         x = mCenter.x - mRectWidth / 2;
+         y = mCenter.y;
          break;
       default:
          break;

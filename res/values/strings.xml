@@ -2,7 +2,7 @@
 <resources>
     <string name="hello">Hello World, MainActivity!</string>
     <string name="app_name">InspectRush</string>
-    <string name="msg_welcome">Touch screen,Let insects rush!!</string>
+    <string name="msg_welcome">Touch screen,Let insects rush!!!</string>
     <string name="msg_start">Insect Rush Started.</string>
     <string name="msg_stop">Insect Rush Stopped.</string>
 </resources>

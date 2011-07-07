@@ -1,6 +1,5 @@
 package com.howfun.android.insect;
 
-import java.util.LinkedList;
 import java.util.Random;
 import java.util.Stack;
 
@@ -8,12 +7,13 @@ import com.howfun.android.insectrush.R;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Point;
 import android.graphics.drawable.AnimationDrawable;
 
 public class Bug extends Insect {
 
-   private final int RECT_WIDTH = 70;
-   private final int RECT_HEIGHT = 70;
+   private final int RECT_WIDTH = 80;
+   private final int RECT_HEIGHT = 80;
 
    public static final int[] FOOTPRINTS = { R.drawable.bug_footprint0,
          R.drawable.bug_footprint1 };
@@ -31,8 +31,7 @@ public class Bug extends Insect {
 
       mRectWidth = RECT_WIDTH;
       mRectHeight = RECT_HEIGHT;
-      setBirth(x, y);
-      setCenter(x, y);
+      setCenter(new Point(x, y));
 
       int direction = DIRECTIONS[RNG.nextInt(DIRECTIONS.length)];
       setDirection(direction);
@@ -43,7 +42,7 @@ public class Bug extends Insect {
       long life = LIFES[RNG.nextInt(LIFES.length)];
       setLife(life);
 
-      mFootprintStack= new Stack<Footprint>();
+      mFootprintStack = new Stack<Footprint>();
 
       setClickable(false);
 
