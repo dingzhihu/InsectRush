@@ -61,7 +61,7 @@ public class MainActivity extends Activity {
 
    private void addInsect(int x, int y) {
       Insect insect = new Bug(mContext, x, y);
-      mInspectManager.addInsect2(insect);
+      mInspectManager.addInsect(insect);
    }
 
    private void showWelcomeMessage(Context context, int stringId) {

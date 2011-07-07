@@ -18,16 +18,10 @@ public class InsectManager {
 
    private static final String TAG = "Insect Manager";
 
-   private static final long DELAY_MILLIS = 200L;
-
-   private static final int MSG_UPDATE_SCREEN = 1;
-   private static final int MSG_KILL_INSECT = 2;
-
    private static final int MAX_INSECT_NUM = 3;
 
    private ScreenView mScreenView;
 
-   private Queue<Insect> mInsectQueue = null;
    private Queue<InsectThread> mInsectThreadQueue = null;
 
    private Context mContext = null;
@@ -36,14 +30,10 @@ public class InsectManager {
       public void handleMessage(Message msg) {
          switch (msg.what) {
          case Utils.MSG_UPDATE_SCREEN:
-            Insect insect2 = (Insect) msg.obj;
-            update2(insect2);
-            break;
-         case MSG_KILL_INSECT:
             Insect insect = (Insect) msg.obj;
-            if (mInsectQueue.contains(insect)) {
-               mInsectQueue.remove(insect);
-            }
+            update(insect);
+            break;
+         case Utils.MSG_KILL_INSECT:
             break;
          default:
             break;
@@ -51,59 +41,27 @@ public class InsectManager {
       }
    };
 
-   private Thread mThread = new Thread() {
-
-      public void run() {
-         while (true) {
-            try {
-               sleep(DELAY_MILLIS);
-            } catch (InterruptedException e) {
-               // TODO Auto-generated catch block
-               e.printStackTrace();
-            }
-            mHandler.sendEmptyMessage(MSG_UPDATE_SCREEN);
-
-         }
-      }
-   };
-
    public InsectManager(Context context) {
       mContext = context;
-      mInsectQueue = new LinkedList<Insect>();
       mInsectThreadQueue = new LinkedList<InsectThread>();
-      // mThread.start();
    }
 
    public void addInsect(Insect insect) {
-
       if (insect == null) {
          return;
       }
-
-      if (mInsectQueue.size() == MAX_INSECT_NUM) {
-         mInsectQueue.remove();
-      }
-
-      mInsectQueue.add(insect);
-      mScreenView.addView(insect);
-      Rect rect = insect.getRect();
-      insect.layout(rect.left, rect.top, rect.right, rect.bottom);
-
-      Message msg = new Message();
-      msg.what = MSG_KILL_INSECT;
-      msg.obj = insect;
-      mHandler.sendMessageDelayed(msg, insect.getLife());
-   }
-
-   public void addInsect2(Insect insect) {
-      if (insect == null) {
-         return;
-      }
-      if (mInsectThreadQueue.size() == MAX_INSECT_NUM) {
+      if (mInsectThreadQueue.size() == 1) {
          InsectThread insectThread = mInsectThreadQueue.remove();
+         insectThread.kill();
          Insect oldInsect = insectThread.getInsect();
          Stack<Footprint> footprintStack = insectThread.getFootprintStack();
-         insectThread.kill();
+         Iterator<Footprint> it = footprintStack.iterator();
+         while (it.hasNext()) {
+            Footprint footprint = it.next();
+            mScreenView.removeView(footprint);
+         }
+         footprintStack.clear();
+         mScreenView.removeView(oldInsect);
       }
 
       mScreenView.addView(insect);
@@ -114,39 +72,7 @@ public class InsectManager {
       thread.start();
    }
 
-   private void setNextPosition() {
-
-      if (mInsectQueue.size() == 0)
-         return;
-
-      Iterator<Insect> it = mInsectQueue.iterator();
-      while (it.hasNext()) {
-         Insect insect = it.next();
-         int x = insect.getX();
-         int y = insect.getY();
-         int step = insect.getStep();
-         int direction = insect.getDirection();
-         switch (direction) {
-         case Insect.NORTH:
-            insect.setCenter(new Point(x, y - step));
-            break;
-         case Insect.SOUTH:
-            insect.setCenter(new Point(x, y + step));
-            break;
-         case Insect.WEST:
-            insect.setCenter(new Point(x - step, y));
-            break;
-         case Insect.EAST:
-            insect.setCenter(new Point(x + step, y));
-            break;
-         default:
-            break;
-         }
-      }
-
-   }
-
-   private void setNextPosition2(Insect insect) {
+   private void setNextPosition(Insect insect) {
 
       if (insect == null) {
          return;
@@ -174,24 +100,7 @@ public class InsectManager {
 
    }
 
-   private void renderScreen() {
-
-      if (mInsectQueue.size() == 0) {
-         return;
-      }
-
-      mScreenView.removeAllViews();
-      Iterator<Insect> it = mInsectQueue.iterator();
-      while (it.hasNext()) {
-         Insect insect = it.next();
-         Rect rect = insect.getRect();
-         mScreenView.addView(insect);
-         insect.layout(rect.left, rect.top, rect.right, rect.bottom);
-      }
-
-   }
-
-   private void renderScreen2(Insect insect) {
+   private void renderScreen(Insect insect) {
       if (insect == null) {
          return;
       }
@@ -216,39 +125,30 @@ public class InsectManager {
          if (intervals > Footprint.CLEAR_DEAD_INTERVALS) {
             if (state != Footprint.STATE_DEAD) {
                print.setState(Footprint.STATE_DEAD);
-               print.setImageResource(R.drawable.shit);
-               // mScreenView.removeView(print);
-               // mScreenView.addView(print);
-               // Rect r = print.getRect();
-               // print.layout(r.left, r.top, r.right, r.bottom);
+               print.setImageResource(R.drawable.transparent);
             }
          } else if (intervals > Footprint.CLEAR_DIM_INTERVALS) {
             if (state != Footprint.STATE_DIM) {
                print.setState(Footprint.STATE_DIM);
-               print.setImageResource(R.drawable.bug_footprint1);
+               // print.setImageResource(R.drawable.bug_footprint1);
             }
          }
       }
    }
 
-   private void update() {
-      setNextPosition();
-      renderScreen();
-   }
-
-   private void update2(Insect insect) {
-      setNextPosition2(insect);
-      renderScreen2(insect);
+   private void update(Insect insect) {
+      setNextPosition(insect);
+      renderScreen(insect);
    }
 
    public void clear() {
-      mScreenView.removeAllViews();
       Iterator<InsectThread> it = mInsectThreadQueue.iterator();
       while (it.hasNext()) {
          InsectThread insectThread = it.next();
          insectThread.kill();
       }
       mInsectThreadQueue.clear();
+      mScreenView.removeAllViews();
    }
 
    public void setScreenView(ScreenView screenView) {
