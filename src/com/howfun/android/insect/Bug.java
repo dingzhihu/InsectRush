@@ -15,8 +15,9 @@ public class Bug extends Insect {
    private final int RECT_WIDTH = 80;
    private final int RECT_HEIGHT = 80;
 
-   public static final int[] FOOTPRINTS = { R.drawable.bug_footprint0,
-         R.drawable.bug_footprint1 };
+   public static final int[] FOOTPRINTS = { R.drawable.bug_footprint_north,
+         R.drawable.bug_footprint_south, R.drawable.bug_footprint_west,
+         R.drawable.bug_footprint_east };
 
    private static final Random RNG = new Random();
 

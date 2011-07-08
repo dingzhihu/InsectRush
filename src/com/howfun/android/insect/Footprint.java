@@ -10,12 +10,12 @@ public class Footprint extends ImageView {
    public static final int STATE_CLEAR = 0;
    public static final int STATE_DIM = 1;
    public static final int STATE_DEAD = 2;
-   
+
    public static long CLEAR_DIM_INTERVALS = 1000L;
    public static long CLEAR_DEAD_INTERVALS = 2000L;
 
-   private final int FOOTPRINT_WIDTH = 32;
-   private final int FOOTPRINT_HEIGHT = 32;
+   private final int FOOTPRINT_WIDTH = 16;
+   private final int FOOTPRINT_HEIGHT = 16;
 
    private Point mCenter = null;
 
@@ -69,5 +69,5 @@ public class Footprint extends ImageView {
    public long getIntervals() {
       return System.currentTimeMillis() - mCreated;
    }
-   
+
 }

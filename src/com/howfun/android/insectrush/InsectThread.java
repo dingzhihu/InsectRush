@@ -49,8 +49,8 @@ public class InsectThread extends Thread {
          Footprint footprint = new Footprint(mContext);
          footprint.setCreated(System.currentTimeMillis());
          footprint.setState(Footprint.STATE_CLEAR);
-         int which = RNG.nextInt(Bug.FOOTPRINTS.length);
-         footprint.setImageResource(R.drawable.bug_shit);
+//         footprint.setImageResource(R.drawable.bug_shit);
+         footprint.setImageResource(getFootprint());
          Point p = mInsect.getFootprintPos();
          footprint.setCenter(p);
          mStack.push(footprint);
@@ -72,6 +72,13 @@ public class InsectThread extends Thread {
 
    public void kill() {
       flag = false;
+   }
+
+   private int getFootprint() {
+      int dir = mInsect.getDirection();
+      int which = dir - 1;
+      int res = Bug.FOOTPRINTS[which];
+      return res;
    }
 
 }

@@ -14,7 +14,7 @@ public class Insect extends ImageView {
    public static final int EAST = 4;
 
    protected static final int[] DIRECTIONS = { NORTH, SOUTH, WEST, EAST };
-   protected static final int[] MOVE_STEPS = { 32, 64 };
+   protected static final int[] MOVE_STEPS = { 20, 30 };
    protected static final long[] LIFES = { 10000L };
    
    protected static long count = 0;
